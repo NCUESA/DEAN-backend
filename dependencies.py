@@ -14,7 +14,7 @@ from models import User
 from exceptions import UnauthenticatedException
 
 
-engine = create_engine("mysql+pymysql://root@localhost:3306/dean")
+engine = create_engine("mysql+pymysql://root@localhost:3306/dean?charset=utf8mb4")
 SessionLocal = sessionmaker(engine, autoflush=False)
 
 async def get_db():
