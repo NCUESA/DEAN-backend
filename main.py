@@ -128,7 +128,8 @@ async def process(rows: ResultSet, db: Session, courses_id_map: dict, day: bool 
                 for t in week_times[week]:
                     if t not in course_week_times_times:
                         new_course_week_times.append(CourseWeekTime(course_id=course.id, week=week, time=t, is_disabled=False))
-            db.add_all(new_course_week_times)
+            if new_course_week_times:
+                db.add_all(new_course_week_times)
             db.flush()
             continue
 

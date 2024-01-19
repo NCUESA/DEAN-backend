@@ -2,6 +2,7 @@ from fastapi import Depends
 from fastapi.routing import APIRouter
 
 from sqlalchemy.orm import Session
+from sqlalchemy import and_
 
 from models import Course, CourseWeekTime
 from schemas import CourseSchema, CourseQuerySchema
@@ -11,7 +12,7 @@ router = APIRouter(prefix="/courses")
 
 @router.get(path="", response_model=list[CourseSchema])
 async def index(query: CourseQuerySchema = Depends(), db: Session = Depends(get_db)):
-    sql_query = db.query(Course).join(CourseWeekTime).filter(CourseWeekTime.is_disabled == False)
+    sql_query = db.query(Course).join(CourseWeekTime, and_(Course.course_week_times, CourseWeekTime.is_disabled == False), isouter=True)
     if query.course_day_night is not None:
         sql_query = sql_query.filter(Course.course_day_night == query.course_day_night)
     if query.course_class is not None:
