@@ -48,6 +48,7 @@ class PartialCourseSchema(BaseSchema):
     course_student_selected: int #選上人數
     course_can_cross_class: str #可跨班
     course_note: str #備註
+    course_day_night: bool #日間/夜間
 
 
 class PartialCourseWeekTimeSchema(BaseSchema):
