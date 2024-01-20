@@ -78,9 +78,9 @@ async def process(rows: ResultSet, db: Session, courses_id_map: dict, day: bool 
         texts = []
         for idx, col in enumerate(row.find_all("td")):
             if idx == 4:
-                texts.append("https://webap0.ncue.edu.tw" + col.find("a").get("href") if col.find("a") else "")
+                texts.append("https://webap0.ncue.edu.tw" + col.find("a").get("href").replace("'", "") if col.find("a") else "")
             elif idx == 9:
-                texts.append(("|".join(col.find_all(string=True)) + "|" + col.find("a").get("href")).replace("javascript: OpenWin", "").replace("(", "").replace(")", "") if col.find("a") else "|".join(col.find_all(string=True)))
+                texts.append(("|".join(col.find_all(string=True)) + "|" + col.find("a").get("href")).replace("javascript: OpenWin", "").replace("(", "").replace(")", "").replace("'", "") if col.find("a") else "|".join(col.find_all(string=True)))
             else:
                 texts.append("|".join(col.find_all(string=True)))
         processed_texts = []
@@ -257,7 +257,7 @@ async def lifespan(app: FastAPI):
     yield
     scheduler.shutdown()
 
-app = FastAPI(lifespan=lifespan)
+app = FastAPI(root_path="/DEAN-api", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
