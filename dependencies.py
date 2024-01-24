@@ -14,7 +14,7 @@ from models import User
 from exceptions import UnauthenticatedException
 
 
-engine = create_engine("mariadb+pymysql://root:Ncuesa23!@localhost:3306/dean?charset=utf8mb4")
+engine = create_engine("")
 SessionLocal = sessionmaker(engine, autoflush=False)
 
 async def get_db():
