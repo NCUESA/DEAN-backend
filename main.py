@@ -51,7 +51,8 @@ async def get_week_times(string: str) -> dict[int, set[int]]:
                     current_week = 0
                 case _:
                     current_week = None
-            week_times[current_week] = set()
+            if current_week not in week_times:
+                week_times[current_week] = set()
         elif "-" in token or "、" in token:
             splited_tokens = token.split("、")
             for splited_token in splited_tokens:
@@ -69,6 +70,14 @@ async def get_week_times(string: str) -> dict[int, set[int]]:
                         week_times[current_week].add(t)
                 else:
                     week_times[current_week].add(int(splited_token))
+        else:
+            try:
+                onlynum = int(token)
+            except ValueError:
+                continue
+            if onlynum < 1 or onlynum > 14:
+                continue
+            week_times[current_week].add(onlynum)
     return week_times
 
 async def process(rows: ResultSet, db: Session, courses_id_map: dict, day: bool = True):
