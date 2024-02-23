@@ -6,5 +6,7 @@ COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
+RUN alembic upgrade head
 
-CMD ["python", "main.py"]
+EXPOSE 6600
+CMD ["uvicorn", "main:app", "--reload", "--host", "0.0.0.0", "--port", "6600"]
